@@ -21,7 +21,7 @@ services:
       NETDATA_MACHINE_GUID_HISTORY: 3600
       NETDATA_MACHINE_GUID_MEMORY_MODE: 'save'
       NETDATA_MACHINE_GUID_HEALTH_ENABLED: 'auto'
-      NETDATA_MACHINE_GUID_MULTIPLE_CONNECTIONS: 'allow
+      NETDATA_MACHINE_GUID_MULTIPLE_CONNECTIONS: 'allow'
     stdin_open: true
     network_mode: host
     volumes:
