@@ -1,0 +1,33 @@
+  
+version: '3'
+services:
+  netdata-master:
+    cap_add:
+    - SYS_PTRACE
+    image: netdata/netdata:latest
+    # configs:
+    #   - source: ./stream-master.conf
+    #     target: /etc/netdata/stream.conf
+    hostname: netdata-master.com # set to fqdn of host
+    environment:
+      NETDATA_PORT: '19999'
+      NETDATA_API_KEY_ENABLE_333919f2-2529-4453-879e-c2f5087c28f2: '1'
+      NETDATA_STREAM_ALLOW_FROM: '*'
+      NETDATA_STREAM_DEFAULT_HISTORY: '3600'
+      NETDATA_STREAM_DEFAULT_MEMORY: 'ram'
+      NETDATA_STREAM_HEALTH_ENABLED_BY_DEFAULT: 'auto'
+      NETDATA_MACHINE_GUID_ENABLED: 'yes'
+      NETDATA_MACHINE_GUID_ALLOW_FROM: '*'
+      NETDATA_MACHINE_GUID_HISTORY: 3600
+      NETDATA_MACHINE_GUID_MEMORY_MODE: 'save'
+      NETDATA_MACHINE_GUID_HEALTH_ENABLED: 'auto'
+      NETDATA_MACHINE_GUID_MULTIPLE_CONNECTIONS: 'allow
+    stdin_open: true
+    network_mode: host
+    volumes:
+    - /proc:/host/proc:ro
+    - /sys:/host/sys:ro
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    tty: true
+    ports:
+    - 19999:19999/tcp

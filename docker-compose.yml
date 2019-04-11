@@ -1,0 +1,52 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "1337:80"
+      - "7331:7331"
+      - "5858:5858"
+      - "9229:9229"
+    volumes:
+      - .:/opt/app
+      - reserved:/opt/app/node_modules/
+    entrypoint:
+      - npm
+      - run
+      - start
+  netdata-slave:
+    image: netdata/netdata
+    hostname: netdata-slave.com # set to fqdn of host
+    # configs:
+    #   source: ./stream-slave.conf
+    #   target: /etc/netdata/stream.conf
+    environment:
+      NETDATA_STREAM_ENABLED: 'yes'
+      NETDATA_PORT: '19998'
+      NETDATA_STREAM_DESTINATION: tcp:127.0.0.1:19999
+      NETDATA_STREAM_API_KEY: 333919f2-2529-4453-879e-c2f5087c28f2
+      NETDATA_MACHINE_GUID_ENABLED: 'yes'
+      NETDATA_MACHINE_GUID_ALLOW_FROM: '*'
+      NETDATA_MACHINE_GUID_HISTORY: 3600
+      NETDATA_MACHINE_GUID_MEMORY_MODE: 'save'
+      NETDATA_MACHINE_GUID_HEALTH_ENABLED: 'auto'
+      NETDATA_MACHINE_GUID_MULTIPLE_CONNECTIONS: 'allow'
+    stdin_open: true
+    network_mode: host
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    # tty: true
+    # links:
+    #   - netdata-master:netdata-master
+    ports:
+      - 19998:19998/tcp
+    # cap_add:
+    #   - SYS_PTRACE
+    security_opt:
+      - apparmor:unconfined
+volumes:
+  reserved:
+
+    
